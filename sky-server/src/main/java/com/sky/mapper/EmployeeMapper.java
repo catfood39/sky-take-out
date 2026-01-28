@@ -26,7 +26,10 @@ public interface EmployeeMapper {
             "values (#{name} ,#{username} ,#{password} ,#{phone}, #{sex}, #{idNumber} ,#{status} ,#{createTime} ,#{updateTime} ,#{createUser} ,#{updateUser} )")
     void insert(Employee employee);
 
-    Page<Employee> selectLimit(EmployeePageQueryDTO employeePageQueryDTO);
+    Page<Employee> pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
     void update(Employee employee);
+
+    @Select("select * from employee where id = #{id}")
+    Employee getById(Long id);
 }
