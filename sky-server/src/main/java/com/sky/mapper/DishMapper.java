@@ -30,4 +30,9 @@ public interface DishMapper {
     void insert(Dish dish);
 
     Page<DishVO> pageQuery(DishPageQueryDTO dishPageQueryDTO);
+
+    @Select("select * from dish where id = #{id}")
+    Dish getById(Long id);
+
+    void deleteByIds(Long[] ids);
 }

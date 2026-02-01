@@ -9,4 +9,6 @@ public interface DishService {
     void save(DishDTO dishDTO);
 
     PageResult pageQuery(DishPageQueryDTO dishPageQueryDTO);
+
+    void deleteBatch(Long[] ids);
 }

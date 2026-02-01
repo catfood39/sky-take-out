@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
+
 @Slf4j
 @Controller
 @ResponseBody
@@ -36,6 +38,14 @@ public class DishController {
         log.info("分页查询: {}", dishPageQueryDTO);
         PageResult pageResult = dishService.pageQuery(dishPageQueryDTO);
         return Result.success(pageResult);
+    }
+
+    @ApiOperation("批量删除菜品")
+    @DeleteMapping
+    public Result deleteBatch(Long[] ids) {
+        log.info("批量删除菜品: {}", Arrays.toString(ids));
+        dishService.deleteBatch(ids);
+        return Result.success();
     }
 
 

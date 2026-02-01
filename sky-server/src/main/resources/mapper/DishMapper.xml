@@ -6,10 +6,17 @@
     <select id="pageQuery" resultType="com.sky.vo.DishVO">
         select dish.*, category.name category_name from dish left join category on dish.category_id = category.id
         <where>
-            <if test="name != null and name != ''">and dish.name = #{name}</if>
+            <if test="name != null and name != ''">and dish.name like concat('%', #{name}, '%')</if>
             <if test="categoryId != null">and dish.category_id = #{categoryId}</if>
             <if test="status != null">and dish.status = #{status}</if>
         </where>
         order by update_time desc
     </select>
+
+    <delete id="deleteByIds">
+        delete from dish where id in
+            <foreach collection="ids" item="id" separator="," open="(" close=")">
+                #{id}
+            </foreach>
+    </delete>
 </mapper>
