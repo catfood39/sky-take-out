@@ -1,6 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.result.Result;
+import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RestController
 @RequestMapping("/admin/common/upload")
+@Api(tags = "文件上传相关接口")
 public class UploadController {
 
     // TODO 等阿里云正常了再写
