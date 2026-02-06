@@ -111,6 +111,10 @@ public class DishServiceImpl implements DishService {
     public List<DishVO> listWithFlavor(Dish dish) {
         List<Dish> dishList = dishMapper.list(dish);
 
+        if (dishList.isEmpty()) {
+            return List.of();
+        }
+
         List<DishVO> dishVOList = new ArrayList<>();
 
         for (Dish d : dishList) {
@@ -125,6 +129,11 @@ public class DishServiceImpl implements DishService {
         }
 
         return dishVOList;
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        dishMapper.updateStatus(status, id);
     }
 
 }
