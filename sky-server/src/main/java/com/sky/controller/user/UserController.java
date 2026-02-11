@@ -48,7 +48,6 @@ public class UserController {
         UserLoginVO userLoginVO = UserLoginVO.builder()
                 .id(user.getId())
                 .token(token)
-                .openid(user.getOpenid())
                 .build();
 
         return Result.success(userLoginVO);
