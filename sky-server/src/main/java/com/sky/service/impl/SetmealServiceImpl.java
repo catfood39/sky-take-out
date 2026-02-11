@@ -57,4 +57,56 @@ public class SetmealServiceImpl implements SetmealService {
     public List<DishItemVO> getDishItemById(Long id) {
         return setmealDishMapper.getDishItemBySetmealId(id);
     }
+
+    @Override
+    @Transactional
+    public void save(SetmealDTO setmealDTO) {
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO, setmeal);
+        setmealMapper.insert(setmeal);
+        setmealDishMapper.insertBatch(setmealDTO.getSetmealDishes());
+    }
+
+    @Override
+    public PageResult pageQuery(SetmealPageQueryDTO dto) {
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
+        Setmeal setmeal = new Setmeal();
+        BeanUtils.copyProperties(dto, setmeal);
+        Page page = (Page) setmealMapper.list(setmeal);
+        return new PageResult(page.getTotal(), page.getResult());
+    }
+
+    @Transactional
+    @Override
+    public SetmealVO getById(Long id) {
+        Setmeal setmeal = setmealMapper.getById(id);
+        List<SetmealDish> list = setmealDishMapper.getBySetmealId(id);
+        SetmealVO setmealVO = new SetmealVO();
+        BeanUtils.copyProperties(setmeal, setmealVO);
+        setmealVO.setSetmealDishes(list);
+        return setmealVO;
+    }
+
+    @Transactional
+    @Override
+    public void update(SetmealDTO setmealDTO) {
+        Setmeal setMeal = new Setmeal();
+        BeanUtils.copyProperties(setmealDTO, setMeal);
+        setmealMapper.update(setMeal);
+        setmealDishMapper.deleteBySetmealId(setmealDTO.getId());
+        setmealDishMapper.insertBatch(setmealDTO.getSetmealDishes());
+    }
+
+    @Override
+    public void startOrStop(Integer status, Long id) {
+        Setmeal setmeal = Setmeal.builder().id(id).status(status).build();
+        setmealMapper.update(setmeal);
+    }
+
+    @Override
+    public void deleteBatch(List<Long> ids) {
+        setmealMapper.deleteBatch(ids);
+    }
+
+
 }

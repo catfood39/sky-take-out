@@ -2,20 +2,22 @@ package com.sky.controller.admin;
 
 import com.sky.dto.DishDTO;
 import com.sky.dto.DishPageQueryDTO;
+import com.sky.entity.Dish;
 import com.sky.result.PageResult;
 import com.sky.result.Result;
 import com.sky.service.DishService;
 import com.sky.vo.DishVO;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 @Slf4j
@@ -80,6 +82,7 @@ public class DishController {
         return Result.success();
     }
 
+    @CachePut
     @ApiOperation("起售/停售")
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status, Long id) {
@@ -88,6 +91,13 @@ public class DishController {
         cleanCache(KEY_PREFIX_DISHES + "*");
 
         return Result.success();
+    }
+
+    @GetMapping("/list")
+    public Result<List<Dish>> getByCategoryId(@RequestParam("categoryId") Long id) {
+        log.info("{}", id);
+        List<Dish> list = dishService.getByCategoryId(id);
+        return Result.success(list);
     }
 
     private void cleanCache(String pattern) {
