@@ -16,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class DishVO implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     //菜品名称

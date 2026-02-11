@@ -11,6 +11,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -29,20 +30,13 @@ public class DishController {
 
     @Autowired
     private DishService dishService;
-    @Autowired
-    private RedisTemplate redisTemplate;
-
-    public static final String KEY_PREFIX_DISHES = "dishes_with_category_id_";
 
     @ApiOperation("新增菜品")
     @PostMapping
+    @CacheEvict(cacheNames = "DishVO", key = "#dishDTO.getCategoryId()")
     public Result save(@RequestBody DishDTO dishDTO) {
         log.info("新增菜品: {}", dishDTO);
         dishService.save(dishDTO);
-
-        String key = KEY_PREFIX_DISHES + dishDTO.getCategoryId();
-        cleanCache(key);
-
         return Result.success();
     }
 
@@ -56,11 +50,10 @@ public class DishController {
 
     @ApiOperation("批量删除菜品")
     @DeleteMapping
+    @CacheEvict(cacheNames = "DishVO", allEntries = true)
     public Result deleteBatch(Long[] ids) {
         log.info("批量删除菜品: {}", Arrays.toString(ids));
         dishService.deleteBatch(ids);
-        cleanCache(KEY_PREFIX_DISHES + "*");
-
         return Result.success();
     }
 
@@ -74,21 +67,20 @@ public class DishController {
 
     @ApiOperation("修改菜品")
     @PutMapping
+    @CacheEvict(cacheNames = "DishVO",  allEntries = true)
     public Result update(@RequestBody DishDTO dishDTO) {
         log.info("修改菜品 {}", dishDTO);
         dishService.update(dishDTO);
-        cleanCache(KEY_PREFIX_DISHES + "*");
 
         return Result.success();
     }
 
-    @CachePut
+    @CacheEvict(cacheNames = "DishVO", allEntries = true)
     @ApiOperation("起售/停售")
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status, Long id) {
         log.info("{} 菜品 {}", status == 1 ? "起售" : "停售", id);
         dishService.startOrStop(status, id);
-        cleanCache(KEY_PREFIX_DISHES + "*");
 
         return Result.success();
     }
@@ -98,11 +90,6 @@ public class DishController {
         log.info("{}", id);
         List<Dish> list = dishService.getByCategoryId(id);
         return Result.success(list);
-    }
-
-    private void cleanCache(String pattern) {
-        Set keys = redisTemplate.keys(pattern);
-        redisTemplate.delete(keys);
     }
 
 }

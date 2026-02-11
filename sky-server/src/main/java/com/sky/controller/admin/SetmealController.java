@@ -7,6 +7,7 @@ import com.sky.result.Result;
 import com.sky.service.SetmealService;
 import com.sky.vo.SetmealVO;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,6 +23,7 @@ public class SetmealController {
         this.setmealService = setmealService;
     }
 
+    @CacheEvict(cacheNames = "Setmeal", key = "#setmealDTO.getCategoryId()")
     @PostMapping
     public Result save(@RequestBody SetmealDTO setmealDTO) {
         log.info("save {}", setmealDTO);
@@ -43,6 +45,7 @@ public class SetmealController {
         return Result.success(setmealVO);
     }
 
+    @CacheEvict(cacheNames = "Setmeal", allEntries = true)
     @PutMapping
     public Result update(@RequestBody SetmealDTO setmealDTO) {
         log.info("update {}", setmealDTO);
@@ -50,6 +53,7 @@ public class SetmealController {
         return Result.success();
     }
 
+    @CacheEvict(cacheNames = "Setmeal", allEntries = true)
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status, @RequestParam Long id) {
         log.info("setmeal {} start or stop {}", id, status);
@@ -57,9 +61,10 @@ public class SetmealController {
         return Result.success();
     }
 
+    @CacheEvict(cacheNames = "Setmeal", allEntries = true)
     @DeleteMapping
-    public Result delete(@RequestParam List<Long> ids) {
-        log.info("delete {}", ids);
+    public Result deleteBatch(@RequestParam List<Long> ids) {
+        log.info("deleteBatch {}", ids);
         setmealService.deleteBatch(ids);
         return Result.success();
     }
