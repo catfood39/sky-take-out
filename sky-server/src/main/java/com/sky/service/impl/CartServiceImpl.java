@@ -70,4 +70,26 @@ public class CartServiceImpl implements CartService {
     public List<ShoppingCart> list() {
         return cartMapper.list(BaseContext.getCurrentId());
     }
+
+    @Override
+    public void sub(ShoppingCartDTO dto) {
+        ShoppingCart cart = new ShoppingCart();
+        BeanUtils.copyProperties(dto, cart);
+        cart.setUserId(BaseContext.getCurrentId());
+        List<ShoppingCart> query = cartMapper.query(cart);
+        if (query == null || query.isEmpty()) {
+            throw new RuntimeException("购物车逻辑异常");
+        }
+        else if (query.get(0).getNumber() == 1) {
+            cartMapper.delete(cart);
+        }
+        else {
+            cartMapper.sub(cart);
+        }
+    }
+
+    @Override
+    public void clean() {
+        cartMapper.deleteByUserId(BaseContext.getCurrentId());
+    }
 }

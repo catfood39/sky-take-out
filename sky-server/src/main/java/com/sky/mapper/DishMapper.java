@@ -2,6 +2,7 @@ package com.sky.mapper;
 
 import com.github.pagehelper.Page;
 import com.sky.annotation.AutoFill;
+import com.sky.annotation.CartClean;
 import com.sky.dto.DishPageQueryDTO;
 import com.sky.entity.Dish;
 import com.sky.enumeration.OperationType;
@@ -34,13 +35,15 @@ public interface DishMapper {
 
     void deleteByIds(Long[] ids);
 
+    @CartClean
     @AutoFill(OperationType.UPDATE)
     void update(Dish dish);
 
     List<Dish> list(Dish dish);
 
     @Update("update dish set status = #{status} where id = #{id}")
-    void updateStatus(Integer status, Long id);
+    @CartClean
+    void updateStatus(Dish dish);
 
     @Select("select * from dish where category_id = #{id}")
     List<Dish> getByCategoryId(Long id);

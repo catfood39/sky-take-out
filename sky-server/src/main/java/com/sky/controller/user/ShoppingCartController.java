@@ -10,6 +10,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 套餐不存在口味，套餐id即可唯一确定一项购物车item
+ * 菜品存在口味区别，不同口味的同一个菜品在购物的视角是两项不同的item
+ */
+
 @RestController
 @RequestMapping("/user/shoppingCart")
 @Slf4j
@@ -35,5 +40,16 @@ public class ShoppingCartController {
         return Result.success(list);
     }
 
+    @PostMapping("/sub")
+    public Result list(@RequestBody ShoppingCartDTO dto) {
+        cartService.sub(dto);
+        return Result.success();
+    }
+
+    @DeleteMapping("/clean")
+    public Result clean() {
+        cartService.clean();
+        return Result.success();
+    }
 
 }
