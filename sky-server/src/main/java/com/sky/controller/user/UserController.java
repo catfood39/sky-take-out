@@ -37,7 +37,7 @@ public class UserController {
     @ApiOperation("user login")
     @PostMapping("/login")
     public Result<UserLoginVO> login(@RequestBody UserLoginDTO userLoginDTO) {
-        log.info("user login: {}", userLoginDTO);
+
 
         User user = userService.wxLogin(userLoginDTO);
 

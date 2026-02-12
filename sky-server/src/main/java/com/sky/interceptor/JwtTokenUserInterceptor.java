@@ -41,6 +41,7 @@ public class JwtTokenUserInterceptor implements HandlerInterceptor {
             return true;
         }
         catch (Exception e) {
+            log.warn("jwt 校验失败");
             response.setStatus(401);
             return false;
         }

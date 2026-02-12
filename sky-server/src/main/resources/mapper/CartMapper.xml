@@ -25,4 +25,8 @@
         </set>
         where id = #{id}
     </update>
+
+    <select id="list" resultType="com.sky.entity.ShoppingCart">
+        select * from shopping_cart where user_id = #{userId}
+    </select>
 </mapper>

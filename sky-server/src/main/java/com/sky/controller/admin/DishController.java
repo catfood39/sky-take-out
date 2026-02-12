@@ -35,7 +35,7 @@ public class DishController {
     @PostMapping
     @CacheEvict(cacheNames = "DishVO", key = "#dishDTO.getCategoryId()")
     public Result save(@RequestBody DishDTO dishDTO) {
-        log.info("新增菜品: {}", dishDTO);
+
         dishService.save(dishDTO);
         return Result.success();
     }
@@ -43,7 +43,7 @@ public class DishController {
     @ApiOperation("分页查询")
     @GetMapping("/page")
     public Result<PageResult> pageQuery(DishPageQueryDTO dishPageQueryDTO) {
-        log.info("分页查询: {}", dishPageQueryDTO);
+
         PageResult pageResult = dishService.pageQuery(dishPageQueryDTO);
         return Result.success(pageResult);
     }
@@ -52,7 +52,7 @@ public class DishController {
     @DeleteMapping
     @CacheEvict(cacheNames = "DishVO", allEntries = true)
     public Result deleteBatch(Long[] ids) {
-        log.info("批量删除菜品: {}", Arrays.toString(ids));
+
         dishService.deleteBatch(ids);
         return Result.success();
     }
@@ -60,7 +60,7 @@ public class DishController {
     @ApiOperation("菜品查询回显")
     @GetMapping("/{id}")
     public Result<DishVO> getById(@PathVariable Long id) {
-        log.info("菜品查询回显: {}", id);
+
         DishVO dishVO = dishService.getById(id);
         return Result.success(dishVO);
     }
@@ -69,7 +69,7 @@ public class DishController {
     @PutMapping
     @CacheEvict(cacheNames = "DishVO",  allEntries = true)
     public Result update(@RequestBody DishDTO dishDTO) {
-        log.info("修改菜品 {}", dishDTO);
+
         dishService.update(dishDTO);
 
         return Result.success();
@@ -79,7 +79,7 @@ public class DishController {
     @ApiOperation("起售/停售")
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status, Long id) {
-        log.info("{} 菜品 {}", status == 1 ? "起售" : "停售", id);
+
         dishService.startOrStop(status, id);
 
         return Result.success();
@@ -87,7 +87,7 @@ public class DishController {
 
     @GetMapping("/list")
     public Result<List<Dish>> getByCategoryId(@RequestParam("categoryId") Long id) {
-        log.info("{}", id);
+
         List<Dish> list = dishService.getByCategoryId(id);
         return Result.success(list);
     }

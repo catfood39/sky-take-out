@@ -65,4 +65,9 @@ public class CartServiceImpl implements CartService {
             throw new ShoppingCartBusinessException("服务器内部数据库约束冲突");
         }
     }
+
+    @Override
+    public List<ShoppingCart> list() {
+        return cartMapper.list(BaseContext.getCurrentId());
+    }
 }

@@ -43,7 +43,7 @@ public class EmployeeController {
     @ApiOperation("员工登入")
     @PostMapping("/login")
     public Result<EmployeeLoginVO> login(@RequestBody EmployeeLoginDTO employeeLoginDTO) {
-        log.info("员工登录：{}", employeeLoginDTO);
+
 
         Employee employee = employeeService.login(employeeLoginDTO);
 
@@ -84,7 +84,7 @@ public class EmployeeController {
     @ApiOperation("新增员工")
     @PostMapping
     public Result save(@RequestBody EmployeeDTO employeeDTO) {
-        log.info("新增员工：{}",  employeeDTO);
+
         employeeService.sava(employeeDTO);
         return Result.success();
     }
@@ -97,7 +97,7 @@ public class EmployeeController {
     @ApiOperation("员工分页查询")
     @GetMapping("/page")
     public Result<PageResult> pageQuery(EmployeePageQueryDTO employeePageQueryDTO) {
-        log.info("员工分页查询: {}", employeePageQueryDTO);
+
         PageResult pageResult = employeeService.pageQuery(employeePageQueryDTO);
         return Result.success(pageResult);
     }
@@ -111,7 +111,7 @@ public class EmployeeController {
     @ApiOperation("启用、禁用员工账号")
     @PostMapping("/status/{status}")
     public Result changeStatus(@PathVariable Integer status, Long id) {
-        log.info("{}员工{}的账号", status == 1 ? "启用" : "禁用", id);
+
         employeeService.changeStatus(status, id);
         return Result.success();
     }
@@ -124,7 +124,7 @@ public class EmployeeController {
     @ApiOperation("根据 id 查询员工信息")
     @GetMapping("/{id}")
     public Result<Employee> getById(@PathVariable Long id) {
-        log.info("根据 id 查询员工信息: {}", id);
+
         Employee employee = employeeService.getById(id);
         return Result.success(employee);
     }
@@ -137,7 +137,7 @@ public class EmployeeController {
     @ApiOperation("跟新员工信息")
     @PutMapping
     public Result update(@RequestBody EmployeeDTO employeeDTO) {
-        log.info("跟新员工信息: {}", employeeDTO);
+
         employeeService.update(employeeDTO);
         return Result.success();
     }

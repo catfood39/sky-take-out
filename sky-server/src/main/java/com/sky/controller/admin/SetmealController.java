@@ -26,21 +26,21 @@ public class SetmealController {
     @CacheEvict(cacheNames = "Setmeal", key = "#setmealDTO.getCategoryId()")
     @PostMapping
     public Result save(@RequestBody SetmealDTO setmealDTO) {
-        log.info("save {}", setmealDTO);
+
         setmealService.save(setmealDTO);
         return Result.success();
     }
 
     @GetMapping("/page")
     public Result<PageResult> pageQuery(SetmealPageQueryDTO dto) {
-        log.info("setmeal page query {}", dto);
+
         PageResult pageResult =setmealService.pageQuery(dto);
         return Result.success(pageResult);
     }
 
     @GetMapping("/{id}")
     public Result<SetmealVO> getById(@PathVariable Long id) {
-        log.info("setmeal get by id {}", id);
+
         SetmealVO setmealVO =setmealService.getById(id);
         return Result.success(setmealVO);
     }
@@ -48,7 +48,7 @@ public class SetmealController {
     @CacheEvict(cacheNames = "Setmeal", allEntries = true)
     @PutMapping
     public Result update(@RequestBody SetmealDTO setmealDTO) {
-        log.info("update {}", setmealDTO);
+
         setmealService.update(setmealDTO);
         return Result.success();
     }
@@ -56,7 +56,7 @@ public class SetmealController {
     @CacheEvict(cacheNames = "Setmeal", allEntries = true)
     @PostMapping("/status/{status}")
     public Result startOrStop(@PathVariable Integer status, @RequestParam Long id) {
-        log.info("setmeal {} start or stop {}", id, status);
+
         setmealService.startOrStop(status, id);
         return Result.success();
     }
@@ -64,7 +64,7 @@ public class SetmealController {
     @CacheEvict(cacheNames = "Setmeal", allEntries = true)
     @DeleteMapping
     public Result deleteBatch(@RequestParam List<Long> ids) {
-        log.info("deleteBatch {}", ids);
+
         setmealService.deleteBatch(ids);
         return Result.success();
     }
