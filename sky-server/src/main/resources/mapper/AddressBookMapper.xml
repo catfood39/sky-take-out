@@ -42,4 +42,7 @@
         where id = #{id}
     </update>
 
+    <select id="selectById" resultType="com.sky.entity.AddressBook">
+        select * from address_book where id = #{addressBookId}
+    </select>
 </mapper>
